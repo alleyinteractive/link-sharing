@@ -20,19 +20,6 @@
     cache_base_image: true
     shell: "BASH"
     run_next_parallel: true
-  - action: "Install and Build NPM Dependencies"
-    type: "BUILD"
-    working_directory: "/buddy/link-sharing"
-    main_service_name: "Main"
-    docker_image_name: "library/node"
-    docker_image_tag: "16"
-    execute_commands:
-    - "npm ci"
-    - "npm run prod"
-    volume_mappings:
-    - "/:/buddy/link-sharing"
-    cache_base_image: true
-    shell: "BASH"
   - action: "Upload files to Park"
     type: "SFTP"
     input_type: "BUILD_ARTIFACTS"
