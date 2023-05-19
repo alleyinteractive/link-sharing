@@ -49,18 +49,3 @@
     run_as_script: true
     shell: "BASH"
     run_next_parallel: true
-  # - action: "Send notification to camp_media_deploys channel"
-  #   type: "SLACK"
-  #   content: "[#$BUDDY_EXECUTION_ID] Deploy to Reflector production by <$BUDDY_INVOKER_URL|$BUDDY_INVOKER_NAME>"
-  #   blocks: "[{\"type\":\"section\",\"fields\":[{\"type\":\"mrkdwn\",\"text\":\"*Successful execution:* <$BUDDY_EXECUTION_URL|Execution #$BUDDY_EXECUTION_ID $BUDDY_EXECUTION_COMMENT>\"},{\"type\":\"mrkdwn\",\"text\":\"*Pipeline:* <$BUDDY_PIPELINE_URL|$BUDDY_PIPELINE_NAME>\"},{\"type\":\"mrkdwn\",\"text\":\"*Branch:* $BUDDY_EXECUTION_BRANCH\"},{\"type\":\"mrkdwn\",\"text\":\"*Project:* <$BUDDY_PROJECT_URL|$BUDDY_PROJECT_NAME>\"}]}]"
-  #   channel: "C93TP371U"
-  #   channel_name: "camp_media_deploys"
-  #   integration_hash: "5fd26dc7da4ad10159c251b4"
-  # - action: "Send notification to camp_media_deploys channel on error"
-  #   type: "SLACK"
-  #   trigger_time: "ON_FAILURE"
-  #   content: "[#$BUDDY_EXECUTION_ID] $BUDDY_PIPELINE_NAME execution by <$BUDDY_INVOKER_URL|$BUDDY_INVOKER_NAME>"
-  #   blocks: "[{\"type\":\"section\",\"fields\":[{\"type\":\"mrkdwn\",\"text\":\":siren: *Failed execution:* <$BUDDY_EXECUTION_URL|Execution #$BUDDY_EXECUTION_ID $BUDDY_EXECUTION_COMMENT>\"},{\"type\":\"mrkdwn\",\"text\":\"*Pipeline:* <$BUDDY_PIPELINE_URL|$BUDDY_PIPELINE_NAME>\"},{\"type\":\"mrkdwn\",\"text\":\"*Branch:* $BUDDY_EXECUTION_BRANCH\"},{\"type\":\"mrkdwn\",\"text\":\"*Project:* <$BUDDY_PROJECT_URL|$BUDDY_PROJECT_NAME>\"}]}]"
-  #   channel: "C93TP371U"
-  #   channel_name: "camp_media_deploys"
-  #   integration_hash: "5fd26dc7da4ad10159c251b4"
