@@ -31,5 +31,6 @@ if (app()->environment('production')) {
     })->name('login');
 }
 
+Route::get('/login', fn () => redirect('/auth/login'))->name('login-redirect');
 Route::get('/{hash}', App\Http\Controllers\LinkController::class)->name('link');
 Route::get('/', App\Http\Controllers\HomeController::class)->name('home');

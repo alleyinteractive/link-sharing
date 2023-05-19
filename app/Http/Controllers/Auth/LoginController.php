@@ -61,10 +61,6 @@ class LoginController extends Controller
 
             auth()->login($existing, true);
 
-            // Ensure the user is attached to a valid team for their domain.
-            $existing->refreshFromHermes();
-            $existing->attachToDomainTeam();
-
             return redirect()->to('/');
         }
 
@@ -75,12 +71,7 @@ class LoginController extends Controller
         $newUser->password = Hash::make(Str::random(32));
         $newUser->google_id = $user->getId();
 
-        $newUser->refreshFromHermes();
-
         $newUser->save();
-
-        // Add the user to the appropriate team for their domain.
-        $newUser->attachToDomainTeam();
 
         auth()->login($newUser, true);
 
