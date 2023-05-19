@@ -12,8 +12,10 @@ class LinkController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // Ensure the user is logged in.
-        if (! auth()->check()) {
+        $vpnIp = config('auth.alley_vpn');
+
+        // Ensure the user is logged in and not on the VPN.
+        if (! auth()->check() && $request->ip() !== $vpnIp) {
             return redirect('/auth/login');
         }
 
