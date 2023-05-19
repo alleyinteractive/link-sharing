@@ -24,6 +24,15 @@ class LinkCreateForm extends Component
     {
         $this->validate();
 
+        // Check if a link with the same URL already exists
+        $link = Link::where('url', $this->url)->first();
+
+        if ($link) {
+            $this->link = $link;
+
+            return;
+        }
+
         $this->link = Link::create([
             'url' => $this->url,
             'user_id' => auth()->id(),
