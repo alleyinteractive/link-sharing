@@ -1,12 +1,12 @@
-<div class="p-6">
-    <div class="overflow-hidden bg-white rounded shadow">
+<div class="flex items-center justify-center h-screen">
+    <div class="p-6">
         <div class="px-4 py-5 sm:p-6">
             <h3 class="mb-2 text-xl font-medium leading-6 text-gray-900">
                 Create a Shortlink
             </h3>
 
             <p>
-                Enter a link below to create a shortlink. This link will only be accessable to other Alleyinz.
+                Enter a link below to create a shortlink. This link will only be accessible to other Alleyinz.
                 <img src="/alley.png" class="w-6 h-6 inline ml-3 relative top-[-2px]" />
             </p>
 
@@ -57,7 +57,7 @@
 
                     <button
                         type="submit"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md shadow-sm w-44 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        class="px-4 py-2 text-sm font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md shadow-sm w-44 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         Create Shortlink
                     </button>
