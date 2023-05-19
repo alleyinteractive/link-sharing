@@ -1,8 +1,8 @@
 <div class="flex items-center justify-center h-screen">
-    <div class="p-6">
+    <div class="max-w-full sm:p-6">
         <div class="px-4 py-5 sm:p-6">
             <h3 class="mb-2 text-xl font-medium leading-6 text-gray-900">
-                Create a Shortlink
+                Create a Private Shortlink
             </h3>
 
             <p>
