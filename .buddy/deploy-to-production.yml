@@ -1,0 +1,79 @@
+- pipeline: "deploy to production"
+  on: "EVENT"
+  events:
+  - type: "PUSH"
+    refs:
+    - "refs/heads/production"
+  priority: "NORMAL"
+  fail_on_prepare_env_warning: true
+  actions:
+  - action: "Install Composer"
+    type: "BUILD"
+    working_directory: "/buddy/link-sharing"
+    docker_image_name: "alleyops/ci-resources"
+    docker_image_tag: "8.1-fpm-wp"
+    execute_commands:
+    - "ssh-keyscan github.com >> /root/.ssh/known_hosts"
+    - "composer install --no-interaction --no-progress --no-dev -o -a --apcu-autoloader --ignore-platform-reqs"
+    volume_mappings:
+    - "/:/buddy/link-sharing"
+    cache_base_image: true
+    shell: "BASH"
+    run_next_parallel: true
+  - action: "Install and Build NPM Dependencies"
+    type: "BUILD"
+    working_directory: "/buddy/link-sharing"
+    main_service_name: "Main"
+    docker_image_name: "library/node"
+    docker_image_tag: "16"
+    execute_commands:
+    - "npm ci"
+    - "npm run prod"
+    volume_mappings:
+    - "/:/buddy/link-sharing"
+    cache_base_image: true
+    shell: "BASH"
+  - action: "Upload files to Park"
+    type: "SFTP"
+    input_type: "BUILD_ARTIFACTS"
+    remote_path: "/var/www/link-sharing"
+    login: "www-data"
+    host: "54.148.134.74"
+    port: "22"
+    authentication_mode: "PUBLIC_KEY"
+    deployment_excludes:
+    - "node_modules*/"
+    - "*/node_modules/*"
+    - "node_modules"
+    - ".npm"
+    - "tests"
+  - action: "Run Migration and Restart Supervisord"
+    type: "SSH_COMMAND"
+    login: "www-data"
+    host: "54.148.134.74"
+    port: "22"
+    authentication_mode: "PUBLIC_KEY"
+    commands:
+    - "cd /var/www/link-sharing"
+    - "php8.1 artisan migrate --force"
+    - ""
+    - "# Optimize configuration"
+    - "php8.1 $(which composer) optimize-deploy"
+    run_as_script: true
+    shell: "BASH"
+    run_next_parallel: true
+  # - action: "Send notification to camp_media_deploys channel"
+  #   type: "SLACK"
+  #   content: "[#$BUDDY_EXECUTION_ID] Deploy to Reflector production by <$BUDDY_INVOKER_URL|$BUDDY_INVOKER_NAME>"
+  #   blocks: "[{\"type\":\"section\",\"fields\":[{\"type\":\"mrkdwn\",\"text\":\"*Successful execution:* <$BUDDY_EXECUTION_URL|Execution #$BUDDY_EXECUTION_ID $BUDDY_EXECUTION_COMMENT>\"},{\"type\":\"mrkdwn\",\"text\":\"*Pipeline:* <$BUDDY_PIPELINE_URL|$BUDDY_PIPELINE_NAME>\"},{\"type\":\"mrkdwn\",\"text\":\"*Branch:* $BUDDY_EXECUTION_BRANCH\"},{\"type\":\"mrkdwn\",\"text\":\"*Project:* <$BUDDY_PROJECT_URL|$BUDDY_PROJECT_NAME>\"}]}]"
+  #   channel: "C93TP371U"
+  #   channel_name: "camp_media_deploys"
+  #   integration_hash: "5fd26dc7da4ad10159c251b4"
+  # - action: "Send notification to camp_media_deploys channel on error"
+  #   type: "SLACK"
+  #   trigger_time: "ON_FAILURE"
+  #   content: "[#$BUDDY_EXECUTION_ID] $BUDDY_PIPELINE_NAME execution by <$BUDDY_INVOKER_URL|$BUDDY_INVOKER_NAME>"
+  #   blocks: "[{\"type\":\"section\",\"fields\":[{\"type\":\"mrkdwn\",\"text\":\":siren: *Failed execution:* <$BUDDY_EXECUTION_URL|Execution #$BUDDY_EXECUTION_ID $BUDDY_EXECUTION_COMMENT>\"},{\"type\":\"mrkdwn\",\"text\":\"*Pipeline:* <$BUDDY_PIPELINE_URL|$BUDDY_PIPELINE_NAME>\"},{\"type\":\"mrkdwn\",\"text\":\"*Branch:* $BUDDY_EXECUTION_BRANCH\"},{\"type\":\"mrkdwn\",\"text\":\"*Project:* <$BUDDY_PROJECT_URL|$BUDDY_PROJECT_NAME>\"}]}]"
+  #   channel: "C93TP371U"
+  #   channel_name: "camp_media_deploys"
+  #   integration_hash: "5fd26dc7da4ad10159c251b4"

@@ -1,0 +1,34 @@
+- pipeline: "test pull requests"
+  on: "EVENT"
+  events:
+  - type: "PUSH"
+    refs:
+    - "refs/pull/*"
+  priority: "NORMAL"
+  fetch_all_refs: true
+  fail_on_prepare_env_warning: true
+  trigger_conditions:
+  - trigger_condition: "ALWAYS"
+  actions:
+  - action: "test pint and phpunit"
+    type: "BUILD"
+    working_directory: "/buddy/link-sharing"
+    docker_image_name: "alleyops/ci-resources"
+    docker_image_tag: "8.1-fpm-wp"
+    execute_commands:
+    - "composer validate"
+    - "cp .env.example .env"
+    - "ssh-keyscan github.com >> /root/.ssh/known_hosts"
+    - "composer install --no-interaction --ignore-platform-reqs"
+    - "php artisan key:generate"
+    - ""
+    - "composer test"
+    - "composer lint"
+    cached_dirs:
+    - "/vendor"
+    - "/root/.composer/cache"
+    volume_mappings:
+    - "/:/buddy/link-sharing"
+    shell: "BASH"
+    trigger_conditions:
+    - trigger_condition: "ALWAYS"
