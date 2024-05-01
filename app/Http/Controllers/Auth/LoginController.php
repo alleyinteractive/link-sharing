@@ -61,6 +61,11 @@ class LoginController extends Controller
 
             auth()->login($existing, true);
 
+            // Redirect the user back to the page they were on.
+            if (session()->has('redirect')) {
+                return redirect('/'.session()->pull('redirect'));
+            }
+
             return redirect()->to('/');
         }
 
