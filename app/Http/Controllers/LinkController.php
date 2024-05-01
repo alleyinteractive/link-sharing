@@ -16,6 +16,9 @@ class LinkController extends Controller
 
         // Ensure the user is logged in and not on the VPN.
         if (! auth()->check() && $request->ip() !== $vpnIp) {
+            // Store the current URL in the session.
+            session()->put('redirect', $request->path());
+
             return redirect('/auth/login');
         }
 
