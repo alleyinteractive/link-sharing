@@ -35,9 +35,9 @@ jobs:
         run: composer install -q
 
       - name: Run Node Tests
-        uses: alleyinteractive/action-test-node@v1.0.0-alpha
+        uses: alleyinteractive/action-test-node@v1
         with:
-          build-command: 'npm run prod'
+          audit-skip: true
           test-skip: true
 
       - name: Run PHP Tests
