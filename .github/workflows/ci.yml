@@ -51,4 +51,4 @@ jobs:
           composer install --no-interaction --ignore-platform-reqs
           php artisan key:generate
           composer lint
-          php artisan test --parallel
+          php artisan test
