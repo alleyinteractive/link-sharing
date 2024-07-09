@@ -25,6 +25,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan ${{ env.SERVER_IP }} >> ~/.ssh/known_hosts
 
+      - name: Run General Tests
+        # See https://github.com/alleyinteractive/action-test-general for more options
+        uses: alleyinteractive/action-test-general@develop
+
+      - name: Run Node Tests
+        # See https://github.com/alleyinteractive/action-test-node for more options
+        uses: alleyinteractive/action-test-node@develop
+        with:
+          audit-skip: true
+          test-skip: true
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -33,12 +43,6 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install -q
-
-      - name: Run Node Tests
-        uses: alleyinteractive/action-test-node@v1
-        with:
-          audit-skip: true
-          test-skip: true
 
       - name: Run PHP Tests
         run: |
