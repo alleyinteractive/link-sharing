@@ -1,0 +1,50 @@
+name: Pull Request Tests
+
+on:
+  pull_request:
+
+env:
+  SERVER_IP: ${{ secrets.SERVER_IP }}
+  SERVER_USER: ${{ secrets.SERVER_USER }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ env.SERVER_IP }} >> ~/.ssh/known_hosts
+
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: composer install -q
+
+      - name: Run Node Tests
+        uses: alleyinteractive/action-test-node@v1.0.0-alpha
+        with:
+          build-command: 'npm run prod'
+          test-skip: true
+
+      - name: Run PHP Tests
+        run: |
+          composer validate
+          cp .env.example .env
+          composer install --no-interaction --ignore-platform-reqs
+          php artisan key:generate
+          composer lint
+          php artisan test --parallel
