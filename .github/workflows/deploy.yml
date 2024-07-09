@@ -50,6 +50,8 @@ jobs:
             --exclude .git \
             --exclude tests \
             --exclude storage/debugbar \
+            --exclude storage/framework/sessions \
+            --exclude storage/logs \
             --exclude .env
 
       - name: Execute remote commands
