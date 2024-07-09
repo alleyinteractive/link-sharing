@@ -39,10 +39,8 @@ jobs:
       - name: Install and build NPM dependencies
         uses: alleyinteractive/action-test-node@v1.0.0-alpha
         with:
-          node-version: '20'
           audit-skip: 'true'
           test-skip: 'true'
-          build-command: 'npm run prod'
 
       - name: Copy files via rsync
         run: |
