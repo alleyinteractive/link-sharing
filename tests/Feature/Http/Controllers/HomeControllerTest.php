@@ -10,7 +10,7 @@ class HomeControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testSeeCreateFormLoggedIn()
+    public function test_see_create_form_logged_in()
     {
         $this->actingAs(User::factory()->create());
 
@@ -18,7 +18,7 @@ class HomeControllerTest extends TestCase
             ->assertSeeLivewire('link-create-form');
     }
 
-    public function testRedirectLoggedOut()
+    public function test_redirect_logged_out()
     {
         $this->get(route('home'))
             ->assertRedirect('/auth/login');
