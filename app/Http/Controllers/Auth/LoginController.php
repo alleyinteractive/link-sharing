@@ -70,7 +70,7 @@ class LoginController extends Controller
         }
 
         // Create a new user from the Google user and fetch their profile from Hermes.
-        $newUser = new User();
+        $newUser = new User;
         $newUser->name = $user->getName();
         $newUser->email = $user->getEmail();
         $newUser->password = Hash::make(Str::random(32));

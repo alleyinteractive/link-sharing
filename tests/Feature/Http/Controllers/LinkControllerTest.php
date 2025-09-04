@@ -11,7 +11,7 @@ class LinkControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testCanAccessLinkLoggedIn()
+    public function test_can_access_link_logged_in()
     {
         // Log the user in.
         $this->actingAs(User::factory()->create());
@@ -24,7 +24,7 @@ class LinkControllerTest extends TestCase
             ->assertRedirect($link->url);
     }
 
-    public function testCanAccessLinkLoggedOut()
+    public function test_can_access_link_logged_out()
     {
         $link = Link::factory()->create();
 
@@ -34,7 +34,7 @@ class LinkControllerTest extends TestCase
             ->assertRedirect('/auth/login');
     }
 
-    public function testCanAccessFromVpn()
+    public function test_can_access_from_vpn()
     {
         $link = Link::factory()->create();
 
