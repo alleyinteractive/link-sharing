@@ -11,7 +11,7 @@
             </p>
 
             @if ($this->link)
-                <div x-data="{ copied: false }" class="p-4 mt-5 border-l-4 border-indigo-400 bg-indigo-50">
+                <div wire:key="{{ $this->link->hash }}" x-data="{ copied: false }" class="p-4 mt-5 border-l-4 border-indigo-400 bg-indigo-50">
                     <input
                         readonly
                         id="shortlink"

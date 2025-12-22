@@ -36,6 +36,7 @@ class LinkCreateForm extends Component
         // Prevent linking back to the app itself.
         if (str_starts_with($this->url, config('app.url'))) {
             $this->addError('url', 'You cannot link back to this app.');
+            $this->link = null;
 
             return;
         }
